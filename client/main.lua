@@ -1,6 +1,6 @@
 local ESX = nil
 
-local ESX = exports['es_extended']:getSharedObject()
+ESX = exports['es_extended']:getSharedObject()
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -8,23 +8,26 @@ Citizen.CreateThread(function()
     end
 
     while true do 
-        local PlayerESXName = GetPlayerName(PlayerId())
-        local PlayerESXJob = ""
-        if ESX.PlayerData.job then
-            PlayerESXJob = ESX.PlayerData.job.name
-        else
-            PlayerESXJob = "No Job"
-        end
         local playerId = GetPlayerServerId(PlayerId())
-        
-        local appId = YOUR_DISCORD_APP_ID -- Deine Discord-App-ID hier einfügen
+
+        local playerName = ""
+        local playerJob = ""
+        ESX.TriggerServerCallback('esx:playerLoaded', function(playerLoaded)
+            if playerLoaded then
+                ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin)
+                    playerName = skin.name
+                    playerJob = skin.job.label
+                end)
+            end
+        end)
+
+        local appId = YOUR_DISCORD_APP_ID 
         local smallPic = 'small'
         local bigPic = 'big'
 
         SetDiscordAppId(appId)
 
-        -- Discord Rich Presence aktualisieren
-        SetRichPresence("Name: " .. PlayerESXName .. "\nJob: " .. PlayerESXJob .. "\nID: " .. playerId)
+        SetRichPresence("Name: " .. playerName .. "\nJob: " .. playerJob .. "\nID: " .. playerId)
         SetDiscordRichPresenceAsset(bigPic)
         SetDiscordRichPresenceAssetText('UltraCity')
         SetDiscordRichPresenceAssetSmall(smallPic)
@@ -33,5 +36,3 @@ Citizen.CreateThread(function()
         Citizen.Wait(1000) 
     end
 end)
-
-
