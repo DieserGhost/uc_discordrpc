@@ -1,15 +1,8 @@
-
 Citizen.CreateThread(function()
-    while ESX == nil do
-        Citizen.Wait(10)
-    end
-
     while true do 
-        local PlayerESXName = GetPlayerName(PlayerId())
+        local PlayerName = GetPlayerName(PlayerId())
         local playerId = GetPlayerServerId(PlayerId())
-        local playerGroup = ""
-
-        playerGroup = GetPlayerGroup(PlayerId())
+        local playerGroup = GetPlayerGroup(PlayerId()) 
         
         local appId = YOUR_DISCORD_APP_ID
         local smallPic = 'small'
@@ -17,7 +10,7 @@ Citizen.CreateThread(function()
 
         SetDiscordAppId(appId)
 
-        SetRichPresence("ID: " .. playerId .. "\nRang: " .. PlayerESXJob .. "\nName: " .. PlayerESXName)
+        SetRichPresence("ID: " .. playerId .. "\nRang: " .. playerGroup .. "\nName: " .. PlayerName)
         SetDiscordRichPresenceAsset(bigPic)
         SetDiscordRichPresenceAssetText('UltraCity')
         SetDiscordRichPresenceAssetSmall(smallPic)
@@ -26,5 +19,3 @@ Citizen.CreateThread(function()
         Citizen.Wait(1000) 
     end
 end)
-
-
