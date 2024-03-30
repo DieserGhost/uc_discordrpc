@@ -1,6 +1,3 @@
-local ESX = nil
-
-ESX = exports['es_extended']:getSharedObject()
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -8,26 +5,19 @@ Citizen.CreateThread(function()
     end
 
     while true do 
+        local PlayerESXName = GetPlayerName(PlayerId())
         local playerId = GetPlayerServerId(PlayerId())
+        local playerGroup = ""
 
-        local playerName = ""
-        local playerJob = ""
-        ESX.TriggerServerCallback('esx:playerLoaded', function(playerLoaded)
-            if playerLoaded then
-                ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin)
-                    playerName = skin.name
-                    playerJob = skin.job.label
-                end)
-            end
-        end)
-
-        local appId = YOUR_DISCORD_APP_ID 
+        playerGroup = GetPlayerGroup(PlayerId())
+        
+        local appId = YOUR_DISCORD_APP_ID
         local smallPic = 'small'
         local bigPic = 'big'
 
         SetDiscordAppId(appId)
 
-        SetRichPresence("Name: " .. playerName .. "\nJob: " .. playerJob .. "\nID: " .. playerId)
+        SetRichPresence("ID: " .. playerId .. "\nRang: " .. PlayerESXJob .. "\nName: " .. PlayerESXName)
         SetDiscordRichPresenceAsset(bigPic)
         SetDiscordRichPresenceAssetText('UltraCity')
         SetDiscordRichPresenceAssetSmall(smallPic)
@@ -36,3 +26,5 @@ Citizen.CreateThread(function()
         Citizen.Wait(1000) 
     end
 end)
+
+
